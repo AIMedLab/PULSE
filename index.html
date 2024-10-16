@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Teach Multimodal LLMs to Comprehend Electrocardiographic Images">
+  <meta name="keywords" content="PULSE, ECG, EKG, electrocardiogram, LLM, Multimodal LLM, AI, AI in Medicine">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Teach Multimodal LLMs to Comprehend Electrocardiographic Images</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/pulse_icon.png">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+<!-- <nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="https://keunhong.com">
+      <span class="icon">
+          <i class="fas fa-home"></i>
+      </span>
+      </a>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More Research
+        </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="https://mmmu-benchmark.github.io/">
+            MMMU
+          </a>
+          <a class="navbar-item" href="https://tiger-ai-lab.github.io/MAmmoTH/">
+            Nerfies
+          </a>
+          <a class="navbar-item" href="https://latentfusion.github.io">
+            LatentFusion
+          </a>
+          <a class="navbar-item" href="https://photoshape.github.io">
+            PhotoShape
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</nav> -->
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">
+            <img src="static/images/pulse_icon.png" style="width:1em;vertical-align: middle" alt="Logo"/>
+            Teach Multimodal LLMs to Comprehend Electrocardiographic Images</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://ruoqi-liu.github.io/">Ruoqi Liu</a><sup>1*</sup>,</span>
+            <span class="author-block">
+              <a href="https://github.com/paralym">Yuelin Bai</a><sup>1*</sup>,</span>
+            <span class="author-block">
+              <a href="https://xiangyue9607.github.io/">Xiang Yue</a><sup>2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://www.pingzhang.net/">Ping Zhang</a><sup>1</sup>,
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>The Ohio State University,</span>
+            <span class="author-block"><sup>2</sup>Carnegie Mellon University</span>
+          </div>
+
+          <div class="is-size-6 publication-authors">
+            <span class="author-block"><sup>*</sup>Equal Contribution</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href=""
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href=""
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+              <!-- Dataset Link. -->
+              <span class="link-block">
+                <a href=""
+                   class="external-link button is-normal is-rounded is-dark">
+                   <span class="icon" style="font-size:18px">🤗</span>
+                  <span>Data</span>
+                  </a>
+              </span>
+              <!-- Model Link. -->
+              <span class="link-block">
+                <a href=""
+                   class="external-link button is-normal is-rounded is-dark">
+                   <span class="icon" style="font-size:18px">🤗</span>
+                  <span>Model</span>
+                  </a>
+              </span> 
+              <!-- Demo Link. -->
+              <span class="link-block">
+                <a href=""
+                   class="external-link button is-normal is-rounded is-dark">
+                   <span class="icon" style="font-size:18px">🤗</span>
+                  <span>Demo</span>
+                  </a>
+              </span> 
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            The electrocardiogram (ECG) is an essential non-invasive diagnostic tool for assessing cardiac conditions. Existing automatic interpretation methods suffer from limited generalizability, focusing on a narrow range of cardiac conditions, and typically depend on raw physiological signals, which may not be readily available in resource-limited settings where only printed or digital ECG images are accessible. Recent promising opportunities for addressing these challenges. However, the application of MLLMs to ECG image interpretation remains challenging due to the lack of instruction tuning datasets and well-established ECG image benchmarks for quantitative evaluation. To address these challenges, we introduce <strong>ECGInstruct</strong>, a comprehensive ECG image instruction tuning dataset of over 1 million samples, covering a wide range of ECG-related tasks from diverse data sources. Using ECGInstruct, we develop <strong>PULSE</strong>, a MLLM tailored for ECG image interpretation. In addition, we curate <strong>ECGBench</strong>, a new evaluation benchmark covering four key ECG image interpretation tasks. Our experiments show that PULSE sets a new state-of-the-art, outperforming general MLLMs with an average accuracy improvement of 15% to 30%. This work highlights the potential of PULSE to enhance ECG interpretation in clinical practice.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+
+    <br>
+
+    <section class="hero teaser">
+      <div class="container is-max-desktop has-text-centered">
+        <img src="static/images/teaser.jpg">
+        <div class="content has-text-justified">
+          <p>Figure 1. Overview of PULSE results. The PULSE demonstrates superior performance across multiple 
+            <span style="color: rgb(33, 95, 154);">in-domain</span> and 
+            <span style="color: rgb(59, 125, 35);">out-of-domain</span> 
+            datasets on our constructed ECGBench compared with advanced proprietary MLLMs (e.g., GPT-4o).  Notably, the proprietary MLLMs often fail to accurately interpret ECG images, generating well-structured and contextually relevant responses but ultimately incorrect (with errors highlighted in red) compared to the ground truth diagnosis.
+          </p>
+        </div>
+      </div>
+    </section>
+</section>
+
+  <!-- Dataset-->
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <section class="hero teaser">
+      <div class="container is-max-desktop has-text-centered">
+        <h2 class="title is-3">Dataset: ECGInstruct</h2>
+        <img src="static/images/ecg_instruct.jpg">
+        <div class="content has-text-justified">
+          <p>Figure 2. ECGInstruct: a list of diverse and large-scale instruction tuning datasets for ECG
+            image interpretation. (1) ECG images are synthesized from raw signal recordings with various
+            distortions that mimic real-world printed ECG images. (2) ECGInstruct is curated based on
+            clinician-defined ECG-related tasks, original diagnosis and clinical reports, and diverse task types.
+            Additional quality checking is applied to filter lower-scored instructions.
+          </p>
+        </div>
+      </div>
+    </section>
+    
+    <br>
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-4">Summary of ECGInstruct</h2>
+        <div class="content has-text-justified">
+          <table>
+            <thead>
+              <tr>
+                <th>Source Dataset</th>
+                <th>Task</th>
+                <th>Type</th>
+                <th># Samples</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td rowspan="4">PTB-XL</td>
+                <td>Feature</td>
+                <td>Close/Open/Fill/MCQ</td>
+                <td>30K</td>
+              </tr>
+              <tr>
+                <td>Rhythm</td>
+                <td>Close/Open/Fill/MCQ</td>
+                <td>36K</td>
+              </tr>
+              <tr>
+                <td>Morphology</td>
+                <td>Close/Open/Fill/MCQ</td>
+                <td>67K</td>
+              </tr>
+              <tr>
+                <td>Report</td>
+                <td>Open</td>
+                <td>16K</td>
+              </tr>
+              
+              <tr>
+                <td rowspan="3">ECG-QA</td>
+                <td>Feature</td>
+                <td>Close</td>
+                <td>40K</td>
+              </tr>
+              <tr>
+                <td>Rhythm</td>
+                <td>Close</td>
+                <td>9K</td>
+              </tr>
+              <tr>
+                <td>Morphology</td>
+                <td>Close</td>
+                <td>90K</td>
+              </tr>
+          
+              <tr>
+                <td rowspan="4">MIMIC-IV-ECG</td>
+                <td>Feature</td>
+                <td>Close/Open/Fill/MCQ</td>
+                <td>29K</td>
+              </tr>
+              <tr>
+                <td>Rhythm</td>
+                <td>Close/Open/Fill/MCQ</td>
+                <td>115K</td>
+              </tr>
+              <tr>
+                <td>Morphology</td>
+                <td>Close/Open/Fill/MCQ</td>
+                <td>169K</td>
+              </tr>
+              <tr>
+                <td>Report</td>
+                <td>Open</td>
+                <td>487K</td>
+              </tr>
+              
+              <tr>
+                <td rowspan="3">CODE-15%</td>
+                <td>Feature</td>
+                <td>Close</td>
+                <td>22K</td>
+              </tr>
+              <tr>
+                <td>Rhythm</td>
+                <td>Close</td>
+                <td>14K</td>
+              </tr>
+              <tr>
+                <td>Morphology</td>
+                <td>Close</td>
+                <td>31K</td>
+              </tr>
+              <tr>
+                <td colspan="3">Total</td>
+                <td>1.2M</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>    
+    </div>
+  </div>
+</section>
+
+  <!-- Benchmark-->
+  <section class="section">
+    <div class="container is-max-desktop">
+  
+      <section class="hero teaser">
+        <div class="container is-max-desktop has-text-centered">
+          <h2 class="title is-3">Benchmark: ECGBench</h2>
+          <img src="static/images/ecg_bench.jpg">
+          <div class="content has-text-justified">
+            <p>Figure 3. The data curation process for ECGBench. There are four key tasks involved: (1) two
+              repurposed tasks (abnormality detection and report generation) derived from existing ECG datasets,
+              where ECG images are synthesized from raw signals, and queries/answers are extracted based on
+              diagnostic and clinical reports; (2) Two newly developed tasks using external resources, where ECG
+              images and associated questions and answers are collected and generated from real-world sources.
+            </p>
+          </div>
+        </div>
+      </section>
+      
+      <br>
+  
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-4">Summary of ECGBench</h2>
+          <div class="content has-text-justified">
+            <table>
+              <thead>
+                <tr>
+                  <th>Evaluation Dataset</th>
+                  <th>Task</th>
+                  <th>Type</th>
+                  <th># Samples</th>
+                  <th>In-Domain?</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>PTB-XL Super</td>
+                  <td>Abnormality Detection</td>
+                  <td>Close-ended</td>
+                  <td>2,082</td>
+                  <td>YES</td>
+                </tr>
+                <tr>
+                  <td>PTB-XL Report</td>
+                  <td>Report Generation</td>
+                  <td>Open-ended</td>
+                  <td>500</td>
+                  <td>YES</td>
+                </tr>
+                <tr>
+                  <td>CODE-15%</td>
+                  <td>Abnormality Detection</td>
+                  <td>Close-ended</td>
+                  <td>1,400</td>
+                  <td>YES</td>
+                </tr>
+                <tr>
+                  <td>ECG-QA</td>
+                  <td>Abnormality Detection</td>
+                  <td>Close-ended</td>
+                  <td>1,317</td>
+                  <td>YES</td>
+                </tr>
+                
+                <tr>
+                  <td>CPSC 2018</td>
+                  <td>Abnormality Detection</td>
+                  <td>Close-ended</td>
+                  <td>2,061</td>
+                  <td>NO</td>
+                </tr>
+                <tr>
+                  <td>CSN</td>
+                  <td>Abnormality Detection</td>
+                  <td>MCQ (8-option)</td>
+                  <td>1,611</td>
+                  <td>NO</td>
+                </tr>
+                <tr>
+                  <td>G12EC</td>
+                  <td>Abnormality Detection</td>
+                  <td>MCQ (8-option)</td>
+                  <td>2,026</td>
+                  <td>NO</td>
+                </tr>
+                <tr>
+                  <td>MMMU ECG</td>
+                  <td>Multimodal Understanding</td>
+                  <td>MCQ (4-option)</td>
+                  <td>200</td>
+                  <td>NO</td>
+                </tr>
+                <tr>
+                  <td>ECG Arena</td>
+                  <td>Multi-turn Conversation</td>
+                  <td>Open-ended</td>
+                  <td>50</td>
+                  <td>NO</td>
+                </tr>
+              </tbody>
+            </table>
+            
+          </div>
+        </div>    
+      </div>
+    </div>
+  </section>
+
+
+ <!-- Results-->
+ <section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-fifths-fifths">
+        <h2 class="title is-3">Results</h2>
+        
+        <div class="content has-text-justified">
+          <div class="tabs">
+            <button onclick="showTab('ind-table')" class="tab-button">In-domain</button>
+            <button onclick="showTab('ood-table')" class="tab-button">Out-of-domain</button>
+        </div>
+        
+        <table id="ind-table" class="tab active">
+          <thead>
+            <tr>
+              <th>Datasets</th>
+              <th colspan="3" style="text-align: center;">PTB-XL Super</th>
+              <th>PTB-XL Report</th>
+              <th colspan="3" style="text-align: center;">CODE-15%</th>
+              <th>ECG-QA</th>
+            </tr></thead>
+          <tbody>
+            <tr>
+              <td>Metric</td>
+              <td>AUC</td>
+              <td>F1</td>
+              <td>HL</td>
+              <td>Report Score</td>
+              <td>AUC</td>
+              <td>F1</td>
+              <td>HL</td>
+              <td>Accuracy</td>
+            </tr>
+            <tr>
+              <td>Random</td>
+              <td>50.3</td>
+              <td>33.2</td>
+              <td>50.1</td>
+              <td>0</td>
+              <td>48.8</td>
+              <td>15.0</td>
+              <td>32.1</td>
+              <td>16.2</td>
+            </tr>
+            <tr>
+              <td colspan="8" style="text-align: center;">Domain-specific Methods</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>METS</td>
+              <td>-</td>
+              <td>65.7<sup>†</sup></td>
+              <td>-</td>
+              <td>N/A</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>N/A</td>
+            </tr>
+            <tr>
+              <td>MERL</td>
+              <td>74.2<sup>†</sup></td>
+              <td>-</td>
+              <td>-</td>
+              <td>N/A</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>N/A</td>
+            </tr>
+            <tr>
+              <td>ST-MEM</td>
+              <td>71.4<sup>†</sup></td>
+              <td>-</td>
+              <td>-</td>
+              <td>N/A</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>N/A</td>
+            </tr>
+            <tr>
+              <td>ECG-GPT</td>
+              <td>69.5<sup>*</sup></td>
+              <td>53.9<sup>*</sup></td>
+              <td>20.1<sup>*</sup></td>
+              <td>47.8<sup>*</sup></td>
+              <td>68.9<sup>*</sup></td>
+              <td>40.1<sup>*</sup></td>
+              <td>17.4<sup>*</sup></td>
+              <td>N/A</td>
+            </tr>
+            <tr>
+              <td colspan="8" style="text-align: center;">Proprietary MLLMs</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>GPT-4o</td>
+              <td><u>55.6</td>
+              <td><u>28.3</td>
+              <td><u>26.2</td>
+              <td><u>50.2</td>
+              <td><u>59.9</td>
+              <td><u>24.9</td>
+              <td>15.7</td>
+              <td><u>35.2</td>
+            </tr>
+            <tr>
+              <td>GPT-4o mini</td>
+              <td>52.0</td>
+              <td>20.4</td>
+              <td>31.7</td>
+              <td>37.1</td>
+              <td>57.5</td>
+              <td>22.0</td>
+              <td><u>15.1</td>
+              <td>14.9</td>
+            </tr>
+            <tr>
+              <td>Gemini 1.5 Pro</td>
+              <td>50.7</td>
+              <td>15.3</td>
+              <td>27.9</td>
+              <td>35.9</td>
+              <td>56.7</td>
+              <td>20.0</td>
+              <td>15.9</td>
+              <td>33.2</td>
+            </tr>
+            <!-- <tr>
+              <td>Med-Gemini-S 1.0</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>57.7<sup>†</sup></td>
+            </tr> -->
+            <tr>
+              <td>Claude 3.5 Sonnet</td>
+              <td>54.0</td>
+              <td>27.5</td>
+              <td>29.6</td>
+              <td>43.7</td>
+              <td>58.3</td>
+              <td>20.3</td>
+              <td>17.8</td>
+              <td>34.2</td>
+            </tr>
+            <tr>
+              <td colspan="8" style="text-align: center;">Open-source MLLMs</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>LLaVA-Med</td>
+              <td>50.0</td>
+              <td>12.3</td>
+              <td>28.1</td>
+              <td>24.3</td>
+              <td>69.2</td>
+              <td>27.0</td>
+              <td>33.4</td>
+              <td><u>29.5</td>
+            </tr>
+            <tr>
+              <td>LLaVA-1.5-7B</td>
+              <td>50.0</td>
+              <td>12.3</td>
+              <td>28.1</td>
+              <td>27.2</td>
+              <td>63.9</td>
+              <td>19.2</td>
+              <td>25.3</td>
+              <td>25.2</td>
+            </tr>
+            <tr>
+              <td>LLaVA-1.5-13B</td>
+              <td>50.0</td>
+              <td>35.2</td>
+              <td>48.4</td>
+              <td>20.7</td>
+              <td>53.9</td>
+              <td>13.1</td>
+              <td>13.6</td>
+              <td>21.2</td>
+            </tr>
+            <tr>
+              <td>LLaVA-1.6-Vicuna-7B</td>
+              <td>50.0</td>
+              <td>15.8</td>
+              <td>29.4</td>
+              <td>16.5</td>
+              <td>50.1</td>
+              <td>1.0</td>
+              <td>13.6</td>
+              <td>13.3</td>
+            </tr>
+            <tr>
+              <td>LLaVA-1.6-Vicuna-13B</td>
+              <td>50.0</td>
+              <td>20.1</td>
+              <td>38.3</td>
+              <td>5.9</td>
+              <td>53.0</td>
+              <td>3.6</td>
+              <td>16.6</td>
+              <td>22.0</td>
+            </tr>
+            <tr>
+              <td>LLaVA-1.6-34B</td>
+              <td>50.2</td>
+              <td>19.9</td>
+              <td>36.0</td>
+              <td>17.0</td>
+              <td>57.2</td>
+              <td>12.8</td>
+              <td>16.6</td>
+              <td>22.4</td>
+            </tr>
+            <tr>
+              <td>LLaVA-OneVision-7B</td>
+              <td>49.8</td>
+              <td>11.4</td>
+              <td>34.5</td>
+              <td>30.0</td>
+              <td>58.7</td>
+              <td>17.0</td>
+              <td>20.6</td>
+              <td>20.4</td>
+            </tr>
+            <tr>
+              <td>LLaVA-OneVision-72B</td>
+              <td>50.6</td>
+              <td>29.6</td>
+              <td>50.4</td>
+              <td>40.6</td>
+              <td>52.3</td>
+              <td>7.0</td>
+              <td><u>13.1</td>
+              <td>25.0</td>
+            </tr>
+            <tr>
+              <td>Deepseek-VL-Chat-7B</td>
+              <td>50.9</td>
+              <td>15.7</td>
+              <td>27.9</td>
+              <td>15.6</td>
+              <td>63.7</td>
+              <td><u>27.5</td>
+              <td>22.4</td>
+              <td>21.1</td>
+            </tr>
+            <tr>
+              <td>Idefics2-8B</td>
+              <td>50.7</td>
+              <td>21.9</td>
+              <td>31.2</td>
+              <td>10.6</td>
+              <td>49.0</td>
+              <td>17.9</td>
+              <td>47.9</td>
+              <td>26.1</td>
+            </tr>
+            <tr>
+              <td>Mantis-8B-siglip-Llama3</td>
+              <td>50.6</td>
+              <td>20.4</td>
+              <td>30.0</td>
+              <td>16.0</td>
+              <td>57.5</td>
+              <td>17.9</td>
+              <td>15.7</td>
+              <td>23.8</td>
+            </tr>
+            <tr>
+              <td>MiniCPM-V-2.6</td>
+              <td>49.0</td>
+              <td><u>37.7</td>
+              <td>63.8</td>
+              <td>15.4</td>
+              <td>56.6</td>
+              <td>25.3</td>
+              <td>22.0</td>
+              <td>20.8</td>
+            </tr>
+            <tr>
+              <td>Phi-3-Vision-128k-Instruct</td>
+              <td>50.0</td>
+              <td>29.6</td>
+              <td>48.4</td>
+              <td>20.2</td>
+              <td><u>69.6</td>
+              <td>22.6</td>
+              <td>38.8</td>
+              <td>28.4</td>
+            </tr>
+            <tr>
+              <td>Qwen2-VL-7B</td>
+              <td>51.3</td>
+              <td>22.4</td>
+              <td>30.8</td>
+              <td>43.0</td>
+              <td>60.7</td>
+              <td>24.8</td>
+              <td>20.5</td>
+              <td>20.4</td>
+            </tr>
+            <tr>
+              <td>Qwen2-VL-72B</td>
+              <td><u>54.0</td>
+              <td>28.3</td>
+              <td>30.2</td>
+              <td><u>48.9</td>
+              <td>60.6</td>
+              <td>23.6</td>
+              <td>16.1</td>
+              <td>23.7</td>
+            </tr>
+            <tr>
+              <td>InternVL2-8B</td>
+              <td>50.6</td>
+              <td>14.3</td>
+              <td><u>27.8</td>
+              <td>38.1</td>
+              <td>55.8</td>
+              <td>16.1</td>
+              <td>17.7</td>
+              <td>22.3</td>
+            </tr>
+            <tr>
+              <td>InternVL2-40B</td>
+              <td>51.2</td>
+              <td>18.7</td>
+              <td>34.6</td>
+              <td>41.8</td>
+              <td>56.7</td>
+              <td>16.2</td>
+              <td>17.4</td>
+              <td>18.2</td>
+            </tr>
+            <tr>
+              <td>InternVL2-Llama3-76B</td>
+              <td>50.4</td>
+              <td>9.4</td>
+              <td>35.6</td>
+              <td>41.4</td>
+              <td>59.0</td>
+              <td>20.2</td>
+              <td>20.5</td>
+              <td>21.8</td>
+            </tr>
+            <tr>
+              <td>PULSE-7B (Ours)</td>
+              <td><strong>82.4</strong></td>
+              <td><strong>74.8</strong></td>
+              <td><strong>11.0</strong></td>
+              <td><strong>61.3</strong></td>
+              <td><strong>90.7</strong></td>
+              <td><strong>85.4</strong></td>
+              <td><strong>5.0</strong></td>
+              <td><strong>73.8</strong></td>
+            </tr>
+            <tr style="background-color: #e6f2ff;">
+              <td>Δ over best proprietary MLLM</td>
+              <td>+27</td>
+              <td>+47</td>
+              <td>+15</td>
+              <td>+11</td>
+              <td>+30</td>
+              <td>+61</td>
+              <td>+10</td>
+              <td>+39</td>
+          </tr>
+          <tr style="background-color: #e6f2ff;">
+            <td>Δ over best open-source MLLM</td>
+            <td>+28</td>
+            <td>+37</td>
+            <td>+17</td>
+            <td>+12</td>
+            <td>+21</td>
+            <td>+58</td>
+            <td>+8</td>
+            <td>+44</td>
+        </tr>
+          </tbody>
+          <caption>In-domain evaluation results. Results marked as <sup>†</sup> are copied from original papers. Results marked as <sup>*</sup> are obtained using the provided online software to collect prediction results. N/A: methods are not applicable or not designed for certain tasks. -: scores are not reported in the original papers. Note that the experimental setup of some domain-specific methods is not exactly the same as ours, thus the results are for reference purposes.</caption>
+        </table>
+      
+        
+        <table id="ood-table" class="tab">
+          <thead>
+            <tr>
+              <th>Datasets</th>
+              <th colspan="3" style="text-align: center;">CPSC 2018</th>
+              <th>CSN</th>
+              <th>G12EC</th>
+              <th>MMMU ECG</th>
+              <th>ECG Arena</th>
+            </tr></thead>
+          <tbody>
+            <tr>
+              <td>Metric</td>
+              <td>AUC</td>
+              <td>F1</td>
+              <td>HL</td>
+              <td>Accuracy</td>
+              <td>Accuracy</td>
+              <td>Accuracy</td>
+              <td>Arena Score</td>
+            </tr>
+            <tr>
+              <td>Random</td>
+              <td>51.2</td>
+              <td>15.1</td>
+              <td>28.8</td>
+              <td>11.6</td>
+              <td>12.1</td>
+              <td>24.2</td>
+              <td>0</td>
+            </tr>
+            <tr>
+              <td colspan="8" style="text-align: center;">Domain-specific Methods</td>
+            </tr>
+            <tr>
+              <td>METS</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>N/A</td>
+              <td>N/A</td>
+              <td>N/A</td>
+              <td>N/A</td>
+            </tr>
+            <tr>
+              <td>MERL</td>
+              <td>82.8<sup>†</sup></td>
+              <td>-</td>
+              <td>-</td>
+              <td>N/A</td>
+              <td>N/A</td>
+              <td>N/A</td>
+              <td>N/A</td>
+            </tr>
+            <tr>
+              <td>ST-MEM</td>
+              <td>70.4<sup>†</sup></td>
+              <td>-</td>
+              <td>-</td>
+              <td>N/A</td>
+              <td>N/A</td>
+              <td>N/A</td>
+              <td>N/A</td>
+            </tr>
+            <tr>
+              <td>ECG-GPT</td>
+              <td>69.3<sup>*</sup></td>
+              <td>44.0<sup>*</sup></td>
+              <td>9.9<sup>*</sup></td>
+              <td>N/A</td>
+              <td>N/A</td>
+              <td>N/A</td>
+              <td>N/A</td>
+            </tr>
+            <tr>
+              <td colspan="8" style="text-align: center;">Proprietary MLLMs</td>
+            </tr>
+            <tr>
+              <td>GPT-4o</td>
+              <td>50.9</td>
+              <td>10.6</td>
+              <td><u>18.2</td>
+              <td><u>57.5</td>
+              <td>49.2</td>
+              <td><u>43.5</td>
+              <td>33.5</td>
+            </tr>
+            <tr>
+              <td>GPT-4o mini</td>
+              <td>49.2</td>
+              <td>11.0</td>
+              <td>25.5</td>
+              <td>32.1</td>
+              <td>33.2</td>
+              <td>39.5</td>
+              <td>30.1</td>
+            </tr>
+            <tr>
+              <td>Gemini-1.5-Pro</td>
+              <td>50.1</td>
+              <td>7.4</td>
+              <td>20.5</td>
+              <td>50.5</td>
+              <td>36.0</td>
+              <td>40.0</td>
+              <td>31.2</td>
+            </tr>
+            <tr>
+              <td>Claude 3.5 Sonnet</td>
+              <td><u>52.8</td>
+              <td><u>11.5</td>
+              <td>18.9</td>
+              <td>51.5</td>
+              <td><u>51.4</td>
+              <td>42.0</td>
+              <td><u>37.1</td>
+            </tr>
+            <tr>
+              <td colspan="8" style="text-align: center;">Open-source MLLMs</td>
+            </tr>
+            <tr>
+              <td>LLaVA-Med</td>
+              <td>50.0</td>
+              <td>2.5</td>
+              <td>20.2</td>
+              <td>13.8</td>
+              <td>14.1</td>
+              <td>27.0</td>
+              <td>15.9</td>
+            </tr>
+            <tr>
+              <td>LLaVA-1.5-7B</td>
+              <td>50.0</td>
+              <td>2.5</td>
+              <td>20.0</td>
+              <td>32.1</td>
+              <td>25.4</td>
+              <td>33.0</td>
+              <td>12.7</td>
+            </tr>
+            <tr>
+              <td>LLaVA-1.5-13B</td>
+              <td>50.4</td>
+              <td>13.3</td>
+              <td>30.1</td>
+              <td>30.7</td>
+              <td>30.7</td>
+              <td>35.0</td>
+              <td>13.1</td>
+            </tr>
+            <tr>
+              <td>LLaVA-1.6-Vicuna-7B</td>
+              <td>50.5</td>
+              <td><u>19.7</td>
+              <td>66.0</td>
+              <td>23.7</td>
+              <td>23.3</td>
+              <td>28.0</td>
+              <td>16.0</td>
+            </tr>
+            <tr>
+              <td>LLaVA-1.6-Vicuna-13B</td>
+              <td>50.0</td>
+              <td>19.3</td>
+              <td>62.8</td>
+              <td>31.4</td>
+              <td>35.0</td>
+              <td>38.0</td>
+              <td>17.9</td>
+            </tr>
+            <tr>
+              <td>LLaVA-1.6-34B</td>
+              <td>49.6</td>
+              <td>19.3</td>
+              <td>62.8</td>
+              <td>44.3</td>
+              <td><u>45.9</td>
+              <td>31.0</td>
+              <td>17.5</td>
+            </tr>
+            <tr>
+              <td>LLaVA-OneVision-7B</td>
+              <td>49.6</td>
+              <td>8.0</td>
+              <td>28.3</td>
+              <td>23.3</td>
+              <td>25.7</td>
+              <td>26.0</td>
+              <td>22.5</td>
+            </tr>
+            <tr>
+              <td>LLaVA-OneVision-72B</td>
+              <td>51.5</td>
+              <td>12.8</td>
+              <td>29.4</td>
+              <td>44.0</td>
+              <td>42.6</td>
+              <td>35.0</td>
+              <td>15.5</td>
+            </tr>
+            <tr>
+              <td>Deepseek-VL-Chat-7B</td>
+              <td>50.7</td>
+              <td>6.0</td>
+              <td>20.0</td>
+              <td>35.7</td>
+              <td>32.9</td>
+              <td>34.5</td>
+              <td>15.3</td>
+            </tr>
+            <tr>
+              <td>Idefics2-8B</td>
+              <td>49.0</td>
+              <td>17.9</td>
+              <td>47.9</td>
+              <td>22.8</td>
+              <td>26.2</td>
+              <td>36.0</td>
+              <td>4.9</td>
+            </tr>
+            <tr>
+              <td>Mantis-8B-siglip-Llama3</td>
+              <td>51.3</td>
+              <td>19.1</td>
+              <td>48.5</td>
+              <td>17.6</td>
+              <td>22.6</td>
+              <td><u>38.5</td>
+              <td>13.6</td>
+            </tr>
+            <tr>
+              <td>MiniCPM-2.6</td>
+              <td>50.0</td>
+              <td>18.0</td>
+              <td>48.4</td>
+              <td>12.7</td>
+              <td>19.6</td>
+              <td>34.5</td>
+              <td>20.4</td>
+            </tr>
+            <tr>
+              <td>Phi-3-Vision-128k-Instruct</td>
+              <td>50.6</td>
+              <td>19.0</td>
+              <td>70.2</td>
+              <td>14.8</td>
+              <td>18.4</td>
+              <td>31.0</td>
+              <td>11.3</td>
+            </tr>
+            <tr>
+              <td>Qwen2-VL-7B</td>
+              <td>49.4</td>
+              <td>17.5</td>
+              <td>46.3</td>
+              <td>25.5</td>
+              <td>32.9</td>
+              <td>31.5</td>
+              <td>8.5</td>
+            </tr>
+            <tr>
+              <td>Qwen2-VL-72B</td>
+              <td>50.7</td>
+              <td>9.8</td>
+              <td><u>18.9</td>
+              <td>35.5</td>
+              <td>42.9</td>
+              <td>35.0</td>
+              <td>10.3</td>
+            </tr>
+            <tr>
+              <td>InternVL2-8B</td>
+              <td>52.1</td>
+              <td>8.2</td>
+              <td>22.2</td>
+              <td><u>47.7</td>
+              <td>37.5</td>
+              <td>30.0</td>
+              <td>22.9</td>
+            </tr>
+            <tr>
+              <td>InternVL2-40B</td>
+              <td><u>52.4</td>
+              <td>8.2</td>
+              <td>21.4</td>
+              <td>41.0</td>
+              <td>45.0</td>
+              <td>30.5</td>
+              <td><u>28.0</td>
+            </tr>
+            <tr>
+              <td>InternVL2-Llama3-76B</td>
+              <td>51.3</td>
+              <td>6.5</td>
+              <td>20.4</td>
+              <td>26.6</td>
+              <td>34.7</td>
+              <td>38.0</td>
+              <td>22.5</td>
+            </tr>
+            <tr>
+              <td>PULSE (Ours)</td>
+              <td><strong>76.9</strong></td>
+              <td><strong>57.6</strong></td>
+              <td><strong>8.6</strong></td>
+              <td><strong>85.2</strong></td>
+              <td><strong>78.2</strong></td>
+              <td><strong>58.0</strong></td>
+              <td><strong>38.9</strong></td>
+            </tr>
+            <tr style="background-color: #e6f2ff;">
+              <td>Δ over best proprietary MLLM</td>
+              <td>+24</td>
+              <td>+46</td>
+              <td>+10</td>
+              <td>+28</td>
+              <td>+27</td>
+              <td>+15</td>
+              <td>+2</td>
+            </tr>
+            <tr style="background-color: #e6f2ff;">
+              <td>Δ over best open-source MLLM</td>
+              <td>+25</td>
+              <td>+38</td>
+              <td>+10</td>
+              <td>+38</td>
+              <td>+33</td>
+              <td>+20</td>
+              <td>+11</td>
+            </tr>
+          </tbody>
+        <caption>Out-of-domain evaluation results. Results marked as <sup>†</sup> are copied from original papers. Results marked as <sup>*</sup> are obtained using the provided online software to collect prediction results. N/A: methods are not applicable or not designed for certain tasks. -: scores are not reported in the original papers.</caption>
+        </table>
+
+        
+        </div>
+      </div>    
+    </div>
+  </div>
+</section>
+
+
+
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>
+      <!-- @article{park2021nerfies,
+      author    = {Park, Keunhong and Sinha, Utkarsh and Barron, Jonathan T. and Bouaziz, Sofien and Goldman, Dan B and Seitz, Steven M. and Martin-Brualla, Ricardo},
+      title     = {Nerfies: Deformable Neural Radiance Fields},
+      journal   = {ICCV},
+      year      = {2021},
+    } -->
+</code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is adapted from <a href="https://nerfies.github.io/">Nerfies</a>, licensed under a <a rel="license"
+                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
