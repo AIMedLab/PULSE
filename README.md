@@ -2,16 +2,18 @@
 The code, data, and models for "Teach Multimodal LLMs to Comprehend Electrocardiographic Images".
 
 ## Dataset and Model
-#### Training data: [ECGInstruct](https://figshare.com/s/c95aea10d8364fd9170c)
-#### Model: [PULSE-7B](https://figshare.com/s/881c755905d9587ce1ce)
-#### Evaluation data: [ECGBench](https://figshare.com/s/54aa9d8e638843518306) 
+#### Training data: [ECGInstruct](https://huggingface.co/datasets/PULSE-ECG/ECGInstruct)
+#### Model: [PULSE-7B](https://huggingface.co/PULSE-ECG/PULSE-7B)
+#### Evaluation data: [ECGBench](https://huggingface.co/datasets/PULSE-ECG/ECGBench) 
 
 ## Installation
 
 Clone the repository and create the environment:
 
 ```shell
-cd LLaVA
+git clone git@github.com:AIMedLab/PULSE.git
+
+cd PULSE/LLaVA
 
 conda create -n pulse-llava python=3.10 -y
 
