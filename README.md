@@ -5,6 +5,7 @@ The code, data, and models for "Teach Multimodal LLMs to Comprehend Electrocardi
 #### Training data: [ECGInstruct](https://huggingface.co/datasets/PULSE-ECG/ECGInstruct)
 #### Model: [PULSE-7B](https://huggingface.co/PULSE-ECG/PULSE-7B)
 #### Evaluation data: [ECGBench](https://huggingface.co/datasets/PULSE-ECG/ECGBench) 
+#### Demo: [Demo](https://huggingface.co/spaces/PULSE-ECG/PULSE)
 
 ## Installation
 
