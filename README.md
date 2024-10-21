@@ -26,43 +26,26 @@ pip install flash-attn --no-build-isolation
 
 PULSE is trained based on `llava-v1.6-vicuna-7b`, and we have modified the LLaVA code to support the training of `llava-v1.6`.
 
-Before training, ensure that the ECG image storage path matches the path in your training set.
+Before training, please download the ECG images and the training set from [link](https://huggingface.co/datasets/PULSE-ECG/ECGInstruct), and ensure that the storage path of the ECG images matches the path specified in the training set.
 
-```python
-from datasets import load_dataset
-import os
-import json
-from tqdm import tqdm
-from concurrent.futures import ThreadPoolExecutor, as_completed
 
-# Set HF_DATASETS_CACHE environment variable
-# os.environ["HF_DATASETS_CACHE"] = "set your hf cache"
+The full ECG image dataset occupies a large amount of space, so please ensure you have a stable network connection and sufficient storage space. You can use the following script to download ECGInstruct and extract images.
 
-# Set the image root
-IMAGE_ROOT = "image root"
-
-# Load the dataset
-repo_id = ""
-dataset = load_dataset(repo_id, split="training", streaming=False)
-print(dataset)
-
-# Function to process and save an image
-def process_and_save(item):
-    image_name = item["image_path"]
-    image = item["image"]
-    save_path = f"{IMAGE_ROOT}/{image_name}"
-    image.save(save_path)
-
-# Use ThreadPoolExecutor for multithreading
-num_threads = os.cpu_count()  # Or specify the number of threads you want to use
-with ThreadPoolExecutor(max_workers=num_threads) as executor:
-    futures = [executor.submit(process_and_save, item) for item in dataset]
-    # Use tqdm to show progress
-    for future in tqdm(as_completed(futures), total=len(futures)):
-        future.result()
+```
+huggingface-cli download --resume-download PULSE-ECG/ECGInstruct --local-dir /path/to/local/directory
 ```
 
-After preparing the image files, pass the `IMAGE_ROOT` to `image_folder` in `LLaVA/scripts/PULSE_training/finetune_pulse.sh`, and set `data_path` (path to the dataset) and `output_dir` (checkpoint save directory). Then you can start the training process.
+```
+source_dir="/path/to/local/directory"  # directory to store shard_*.tar.gz
+target_dir="/path/to/target"  # target directory
+
+mkdir -p "$target_dir"
+
+ls "$source_dir"/shard_*.tar.gz | parallel -j 4 tar -xzf {} -C "$target_dir"
+```
+
+
+After preparing the training files, pass `/path/to/local/directory` to `image_folder` in `LLaVA/scripts/PULSE_training/finetune_pulse.sh`, and set `data_path` (path to the dataset) and `output_dir` (checkpoint save directory). Then you can start the training process.
 
 The training parameters for PULSE are as follows:
 
