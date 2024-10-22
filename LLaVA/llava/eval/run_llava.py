@@ -75,7 +75,7 @@ def eval_model(args):
         conv_mode = "mistral_instruct"
     elif "v1.6-34b" in model_name.lower():
         conv_mode = "chatml_direct"
-    elif "v1" in model_name.lower():
+    elif "v1" in model_name.lower() or "pulse" in model_name.lower():
         conv_mode = "llava_v1"
     elif "mpt" in model_name.lower():
         conv_mode = "mpt"
@@ -130,13 +130,13 @@ def eval_model(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model-path", type=str, default="facebook/opt-350m")
+    parser.add_argument("--model-path", type=str, default="PULSE-ECG/PULSE-7B")
     parser.add_argument("--model-base", type=str, default=None)
     parser.add_argument("--image-file", type=str, required=True)
     parser.add_argument("--query", type=str, required=True)
     parser.add_argument("--conv-mode", type=str, default=None)
     parser.add_argument("--sep", type=str, default=",")
-    parser.add_argument("--temperature", type=float, default=0.2)
+    parser.add_argument("--temperature", type=float, default=0.0)
     parser.add_argument("--top_p", type=float, default=None)
     parser.add_argument("--num_beams", type=int, default=1)
     parser.add_argument("--max_new_tokens", type=int, default=512)
