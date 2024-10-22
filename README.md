@@ -2,10 +2,13 @@
 The code, data, and models for "Teach Multimodal LLMs to Comprehend Electrocardiographic Images".
 
 ## Dataset and Model
-#### Training data: [ECGInstruct](https://huggingface.co/datasets/PULSE-ECG/ECGInstruct)
-#### Model: [PULSE-7B](https://huggingface.co/PULSE-ECG/PULSE-7B)
-#### Evaluation data: [ECGBench](https://huggingface.co/datasets/PULSE-ECG/ECGBench) 
-#### Demo: [Demo](https://huggingface.co/spaces/PULSE-ECG/PULSE)
+#### 🌐 Project Page: [Page](https://aimedlab.github.io/PULSE/)
+#### 📄 Paper: [Arxiv](https://aimedlab.github.io/PULSE/)
+#### 🤗 Model: [PULSE-7B](https://huggingface.co/PULSE-ECG/PULSE-7B)
+#### 👩‍⚕️ Training data: [ECGInstruct](https://huggingface.co/datasets/PULSE-ECG/ECGInstruct)
+#### ⚖️ Evaluation data: [ECGBench](https://huggingface.co/datasets/PULSE-ECG/ECGBench) 
+#### 🩺 Demo: [Demo](https://huggingface.co/spaces/PULSE-ECG/PULSE)
+
 
 ## Installation
 
