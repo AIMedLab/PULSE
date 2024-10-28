@@ -3,7 +3,7 @@ The code, data, and models for "Teach Multimodal LLMs to Comprehend Electrocardi
 
 ## Dataset and Model
 #### 🌐 Project Page: [Page](https://aimedlab.github.io/PULSE/)
-#### 📄 Paper: [Arxiv](https://aimedlab.github.io/PULSE/)
+#### 📄 Paper: [Arxiv](https://arxiv.org/abs/2410.19008)
 #### 🤗 Model: [PULSE-7B](https://huggingface.co/PULSE-ECG/PULSE-7B)
 #### 👩‍⚕️ Training data: [ECGInstruct](https://huggingface.co/datasets/PULSE-ECG/ECGInstruct)
 #### ⚖️ Evaluation data: [ECGBench](https://huggingface.co/datasets/PULSE-ECG/ECGBench) 
@@ -207,7 +207,13 @@ python eval_arena.py
 ```
 
 ## Citation
-If you find this work helpful, please cite out paper:
-```bibtex
+If you find this work helpful, please cite our paper:
+```
+@article{liu2024teach,
+  title={Teach Multimodal LLMs to Comprehend Electrocardiographic Images},
+  author={Ruoqi Liu, Yuelin Bai, Xiang Yue, Ping Zhang},
+  journal={arXiv preprint arXiv:2410.19008},
+  year={2024}
+}
 ```
 
